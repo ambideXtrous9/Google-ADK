@@ -3,3 +3,4 @@ python-dotenv
 litellm
 duckduckgo_search
 ddgs
+mcp
