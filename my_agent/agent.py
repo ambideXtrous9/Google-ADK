@@ -30,7 +30,7 @@ research_agent = Agent(
     model=model,
     description="This agent does research.",
     instruction="""
-    You are a helpful assistant that does research.
+    You are a helpful assistant that does research by using the 'duckduckgo_search' tool.
     """,
     tools=[ddg_search_tool],
     output_key="research",
@@ -42,7 +42,7 @@ mythology_agent = Agent(
     model=model,
     description="This agent answers mythology questions.",
     instruction="""
-    You are a helpful assistant that answers mythology questions.
+    You are a helpful assistant that answers mythology questions by using the 'duckduckgo_search' tool.
     """,
     tools=[ddg_search_tool],
     output_key="mythology",
