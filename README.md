@@ -4,8 +4,9 @@
 
 ![Python](https://img.shields.io/badge/Python-3.12+-blue.svg)
 ![Status](https://img.shields.io/badge/Status-Active-success.svg)
+![Google ADK](https://img.shields.io/badge/Google-ADK-4285F4?logo=google&logoColor=white)
 
-**A powerful multi-agent system built with Google Agent Development Kit (ADK) for intelligent research and mythology queries**
+**A powerful multi-agent system built with Google Agent Development Kit (ADK) for intelligent research, mythology queries, and Airbnb hotel search**
 
 🚧 **Agentic Workflow Building in Progress** 🚧
 
@@ -24,51 +25,76 @@
 - [💻 Usage](#-usage)
 - [🔧 Project Structure](#-project-structure)
 - [📦 Dependencies](#-dependencies)
+- [🎯 Functionalities](#-functionalities)
+- [🛠️ Customization](#️-customization)
 - [🤝 Contributing](#-contributing)
 
 ---
 
 ## ✨ Features
 
-- 🎯 **Multi-Agent Architecture**: Intelligent agent orchestration with supervisor pattern
+- 🎯 **Multi-Agent Architecture**: Intelligent agent orchestration with parallel and sequential patterns
 - 🔍 **Web Search Integration**: DuckDuckGo search capabilities for real-time information
-- 🧠 **Advanced LLM Support**: Powered by LiteLLM with Groq's Qwen3-32B model
-- 🎭 **Specialized Agents**: Dedicated agents for research and mythology queries
-- 🔄 **Supervisor Pattern**: Centralized coordination for multi-agent workflows
-- ⚡ **Fast & Efficient**: Optimized for performance with modern AI models
-- 🛠️ **Extensible Design**: Easy to add new agents and tools
+- 🏨 **Airbnb Integration**: MCP-powered hotel search with comprehensive listings and comparisons
+- 🧠 **Advanced LLM Support**: Powered by LiteLLM with Groq's Qwen3-32B and Gemini 2.0 Flash
+- 🎭 **Specialized Agents**: Dedicated agents for research, mythology, and travel planning
+- ⚡ **Parallel Execution**: Multiple agents run simultaneously for faster results
+- 🔄 **Sequential Workflow**: Smart orchestration with parallel fetch and sequential synthesis
+- 🛠️ **MCP Tool Integration**: Model Context Protocol for seamless tool connectivity
+- 📊 **Comprehensive Reports**: Automated summarization and comparison of results
+- 🎨 **Structured Output**: Beautifully formatted results with tables and comparisons
 
 ---
 
 ## 🏗️ Architecture
 
-This project implements a **supervisor-agent pattern** with the following components:
+This project implements a **sequential-parallel hybrid pattern** with the following components:
 
 ```
-┌─────────────────────────────────────┐
-│     Supervisor Agent (Root)        │
-│  Coordinates & synthesizes outputs │
-└──────────────┬──────────────────────┘
+┌─────────────────────────────────────────────┐
+│      Report Agent (Root - Sequential)       │
+│  Orchestrates parallel fetch → synthesis   │
+└──────────────┬──────────────────────────────┘
                │
        ┌───────┴────────┐
        │                │
-┌──────▼──────┐  ┌──────▼──────┐
-│ Mythology   │  │  Research   │
-│   Agent     │  │   Agent     │
-│             │  │             │
-│ 🎭 Answers  │  │ 🔬 Performs │
-│ mythology   │  │   research  │
-│ questions   │  │   queries   │
-└─────────────┘  └─────────────┘
+┌──────▼──────┐  ┌──────▼──────────┐
+│  Parallel   │  │  Summarizer     │
+│   Agent     │  │    Agent        │
+│             │  │                 │
+│ Runs 3      │  │ Combines all    │
+│ agents      │  │ outputs into    │
+│ in parallel │  │ final report    │
+└──────┬──────┘  └─────────────────┘
+       │
+  ┌────┴────┬──────────┐
+  │         │          │
+┌─▼───┐ ┌──▼───┐ ┌───▼────┐
+│Airbnb│ │Mytho│ │Research│
+│Agent │ │logy │ │ Agent  │
+│      │ │Agent│ │        │
+│🏨 MCP│ │🎭 DDG│ │🔬 DDG  │
+│Gemini│ │Qwen │ │Qwen    │
+└──────┘ └─────┘ └────────┘
 ```
 
 ### 🤖 Agent Descriptions
 
-| Agent | Purpose | Tools | Output Key |
-|-------|---------|-------|------------|
-| **Research Agent** 🔬 | Performs comprehensive web research using DuckDuckGo | `duckduckgo_search` | `research` |
-| **Mythology Agent** 🎭 | Answers questions about mythology and legends | `duckduckgo_search` | `mythology` |
-| **Supervisor Agent** 👑 | Coordinates sub-agents and generates final responses | Sub-agents | N/A |
+| Agent | Type | Purpose | Tools | Model | Output Key |
+|-------|------|---------|-------|-------|------------|
+| **Research Agent** 🔬 | LlmAgent | Performs comprehensive web research | `duckduckgo_search` | Qwen3-32B | `research` |
+| **Mythology Agent** 🎭 | LlmAgent | Answers mythology questions | `duckduckgo_search` | Qwen3-32B | `mythology` |
+| **Airbnb Agent** 🏨 | LlmAgent | Searches and formats hotel listings | `MCPToolset` (Airbnb) | Gemini 2.0 Flash | `airbnb` |
+| **Parallel Agent** ⚡ | ParallelAgent | Runs multiple agents simultaneously | Sub-agents | N/A | N/A |
+| **Summarizer Agent** 📊 | LlmAgent | Combines and formats all results | None | Qwen3-32B | N/A |
+| **Report Agent** 📋 | SequentialAgent | Orchestrates workflow | Sub-agents | N/A | N/A |
+
+### 🔄 Workflow Pattern
+
+1. **Parallel Execution** ⚡: Three agents (Airbnb, Mythology, Research) run simultaneously
+2. **Data Aggregation** 📊: All results are collected
+3. **Synthesis** 🎯: Summarizer agent combines outputs into a comprehensive report
+4. **Final Output** 📄: Structured report with mythology, research, and hotel listings
 
 ---
 
@@ -78,6 +104,7 @@ This project implements a **supervisor-agent pattern** with the following compon
 
 - Python 3.12 or higher
 - pip package manager
+- Node.js and npm (for MCP server)
 - Virtual environment (recommended)
 
 ### Step-by-Step Setup
@@ -94,15 +121,22 @@ This project implements a **supervisor-agent pattern** with the following compon
    source venv/bin/activate  # On Windows: venv\Scripts\activate
    ```
 
-3. **Install dependencies**
+3. **Install Python dependencies**
    ```bash
    pip install -r requirements.txt
    ```
 
-4. **Set up environment variables**
+4. **Install Node.js dependencies** (for MCP server)
    ```bash
-   cp .env.example .env  # If you have an example file
-   # Edit .env with your API keys and configuration
+   # MCP server will be installed automatically via npx on first use
+   # Ensure Node.js and npm are installed on your system
+   ```
+
+5. **Set up environment variables**
+   ```bash
+   # Create .env file
+   touch .env
+   # Edit .env with your API keys
    ```
 
 ---
@@ -117,17 +151,32 @@ Create a `.env` file in the root directory with the following variables:
 # Groq API Configuration
 GROQ_API_KEY=your_groq_api_key_here
 
+# Google API Configuration (for Gemini)
+GOOGLE_API_KEY=your_google_api_key_here
+
 # Other configuration variables
 # Add as needed
 ```
 
 ### Model Configuration
 
-The system uses **Groq's Qwen3-32B** model by default. You can modify the model in `my_agent/agent.py`:
+The system uses multiple models:
+
+- **Qwen3-32B** (via Groq): Used for research, mythology, and summarization
+- **Gemini 2.0 Flash**: Used for Airbnb agent
+
+You can modify models in `my_agent/agent.py`:
 
 ```python
+# For Qwen model
 model = LiteLlm(
     model="groq/qwen/qwen3-32b",  # Change to your preferred model
+)
+
+# For Gemini model (in Airbnb agent)
+airbnb_agent = LlmAgent(
+    model='gemini-2.0-flash',  # Change to your preferred Gemini model
+    # ... other parameters
 )
 ```
 
@@ -140,34 +189,65 @@ model = LiteLlm(
 ```python
 from my_agent.agent import root_agent
 
-# Use the supervisor agent (root_agent)
-response = root_agent.run("What is the story of Zeus in Greek mythology?")
+# Use the report agent (root_agent) for comprehensive queries
+query = "Find hotels in Paris and tell me about Greek mythology related to the city"
+response = root_agent.run(query)
 print(response)
 ```
 
 ### Using Individual Agents
 
 ```python
-from my_agent.agent import research_agent, mythology_agent
+from my_agent.agent import research_agent, mythology_agent, airbnb_agent
 
 # Research query
 research_result = research_agent.run("Latest developments in AI")
+print(research_result)
 
 # Mythology query
 mythology_result = mythology_agent.run("Tell me about Norse gods")
+print(mythology_result)
+
+# Airbnb search
+airbnb_result = airbnb_agent.run("Search hotels in Tokyo with max price 200")
+print(airbnb_result)
 ```
 
-### Example Workflow
+### Using Parallel Agent
 
 ```python
-# The supervisor agent automatically coordinates sub-agents
-query = "Compare Greek and Norse mythology"
+from my_agent.agent import parallel_agent
 
-# Supervisor will:
-# 1. Route to mythology_agent for mythology information
-# 2. Route to research_agent for comparative research
-# 3. Synthesize the final response
+# Run multiple agents in parallel
+query = "Search hotels in Rome and research about Roman history"
+results = parallel_agent.run(query)
+# Returns results from all three agents
+```
+
+### Complete Workflow Example
+
+```python
+from my_agent.agent import root_agent
+
+# The report agent orchestrates the complete workflow:
+# 1. Runs parallel_agent (airbnb + mythology + research) simultaneously
+# 2. Summarizes all results into a comprehensive report
+
+query = """
+Find hotels in Athens, Greece with max price 150 per night.
+Also tell me about Greek mythology related to Athens and 
+research interesting facts about the city.
+"""
+
 result = root_agent.run(query)
+
+# Output includes:
+# - Mythology summary about Athens
+# - Research facts about Athens
+# - Airbnb hotel listings with ratings, prices, amenities
+# - Comparison table of hotels
+# - Final recommendations (Best Value, Luxury, Budget, etc.)
+print(result)
 ```
 
 ---
@@ -185,6 +265,7 @@ Google-ADK/
 │
 ├── 📁 gadk/                        # Virtual environment (if present)
 │
+├── 📄 prompt.py                    # 📝 Prompt templates
 ├── 📄 requirements.txt             # 📦 Project dependencies
 ├── 📄 README.md                    # 📖 This file
 └── 📄 .env                         # 🔐 Environment variables (create this)
@@ -201,6 +282,7 @@ Google-ADK/
 | `litellm` | LLM abstraction layer | Latest |
 | `duckduckgo_search` | DuckDuckGo search integration | Latest |
 | `ddgs` | DuckDuckGo search client | Latest |
+| `mcp` | Model Context Protocol | Latest |
 
 ### Install All Dependencies
 
@@ -229,6 +311,24 @@ def duckduckgo_search(query: str) -> List:
     return results
 ```
 
+### 🏨 Airbnb Hotel Search
+
+The Airbnb agent uses **MCP (Model Context Protocol)** to:
+- Search hotels by location and price
+- Retrieve detailed hotel information
+- Format results in structured tables
+- Provide comparisons and recommendations
+
+**Features:**
+- ⭐ Rating and review information
+- 💰 Price per night with tax details
+- 📍 Full address and location details
+- 🏠 Room categories and availability
+- 📏 Distance from city center and airport
+- 🔗 Direct booking links
+- 📞 Contact information
+- 🏆 Final picks (Best Value, Luxury, Budget, etc.)
+
 ### 🤖 Agent Capabilities
 
 #### Research Agent 🔬
@@ -243,11 +343,41 @@ def duckduckgo_search(query: str) -> List:
 - Covers various mythological traditions
 - Output key: `mythology`
 
-#### Supervisor Agent 👑
-- Coordinates multiple sub-agents
-- Routes queries to appropriate agents
-- Synthesizes outputs from sub-agents
-- Generates comprehensive final responses
+#### Airbnb Agent 🏨
+- Searches hotels using MCP tools
+- Formats results in beautiful tables
+- Provides comprehensive hotel comparisons
+- Outputs structured recommendations
+- Output key: `airbnb`
+
+#### Parallel Agent ⚡
+- Executes multiple agents simultaneously
+- Improves performance through parallelization
+- Collects outputs from all sub-agents
+- Sub-agents: `airbnb_agent`, `mythology_agent`, `research_agent`
+
+#### Summarizer Agent 📊
+- Combines results from all three agents
+- Formats output in structured markdown
+- Creates comprehensive reports
+- Includes mythology, research, and hotel listings
+
+#### Report Agent 📋
+- Orchestrates the complete workflow
+- Runs parallel agent first (data collection)
+- Then runs summarizer agent (synthesis)
+- Returns final comprehensive report
+
+### 📊 Output Format
+
+The system generates beautifully formatted reports with:
+
+- **🎯 Search Summary**: Location, dates, guests, room details
+- **🏨 Hotel Listings**: Detailed information per hotel
+- **📈 Comparison Tables**: Side-by-side hotel comparisons
+- **🏆 Final Picks**: Recommendations (Best Value, Luxury, Budget, Location, Amenities)
+- **📝 Mythology Summary**: Contextual mythology information
+- **🔬 Research Summary**: Interesting facts and information
 
 ---
 
@@ -255,16 +385,11 @@ def duckduckgo_search(query: str) -> List:
 
 ### Adding a New Agent
 
-1. **Define the agent function**:
+1. **Create the agent**:
    ```python
-   def my_custom_agent(query: str) -> str:
-       # Your agent logic here
-       return result
-   ```
-
-2. **Create the agent**:
-   ```python
-   custom_agent = Agent(
+   from google.adk.agents import LlmAgent
+   
+   custom_agent = LlmAgent(
        name="custom_agent",
        model=model,
        description="Your agent description",
@@ -274,16 +399,28 @@ def duckduckgo_search(query: str) -> List:
    )
    ```
 
-3. **Add to supervisor**:
+2. **Add to parallel agent**:
    ```python
-   supervisor_agent = Agent(
+   parallel_agent = ParallelAgent(
+       name="parallel_agent",
+       sub_agents=[airbnb_agent, mythology_agent, research_agent, custom_agent],
+   )
+   ```
+
+3. **Update summarizer**:
+   ```python
+   summarizer_agent = LlmAgent(
        # ... other parameters
-       sub_agents=[mythology_agent, research_agent, custom_agent],
+       instruction="""
+       Combine results from {airbnb}, {mythology}, {research}, and {custom}.
+       # ... formatting instructions
+       """,
    )
    ```
 
 ### Creating Custom Tools
 
+#### Function Tool
 ```python
 from google.adk.tools import FunctionTool
 
@@ -293,6 +430,38 @@ def my_custom_tool(input: str) -> str:
     return result
 
 custom_tool = FunctionTool(func=my_custom_tool)
+```
+
+#### MCP Tool
+```python
+from google.adk.tools.mcp_tool.mcp_toolset import MCPToolset
+from google.adk.tools.mcp_tool.mcp_session_manager import StdioConnectionParams
+from mcp import StdioServerParameters
+
+mcp_tool = MCPToolset(
+    connection_params=StdioConnectionParams(
+        server_params=StdioServerParameters(
+            command="npx",
+            args=["-y", "@your/mcp-server"],
+        ),
+        timeout=180,
+    ),
+)
+```
+
+### Using Different Agent Types
+
+```python
+from google.adk.agents import LlmAgent, ParallelAgent, SequentialAgent
+
+# LlmAgent: Single LLM-powered agent
+agent = LlmAgent(...)
+
+# ParallelAgent: Run multiple agents simultaneously
+parallel = ParallelAgent(sub_agents=[agent1, agent2, agent3])
+
+# SequentialAgent: Run agents in sequence
+sequential = SequentialAgent(sub_agents=[agent1, agent2])
 ```
 
 ---
@@ -313,6 +482,7 @@ Contributions are welcome! Here's how you can help:
 - 📝 Add comments for complex logic
 - 🧪 Include tests for new features
 - 📖 Update documentation as needed
+- 🎨 Maintain consistent formatting
 
 ---
 
@@ -320,8 +490,11 @@ Contributions are welcome! Here's how you can help:
 
 - **Google ADK** for the Agent Development Kit
 - **LiteLLM** for LLM abstraction
-- **Groq** for providing fast inference
+- **Groq** for providing fast inference with Qwen models
+- **Google Gemini** for powerful language models
 - **DuckDuckGo** for search capabilities
+- **MCP** for Model Context Protocol integration
+- **OpenAirbnb** for MCP server implementation
 
 ---
 
@@ -346,4 +519,3 @@ If you encounter any issues or have questions:
 🚧 **Agentic Workflow Building in Progress** 🚧
 
 </div>
-
